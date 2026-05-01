@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Levitin Algorithms → LeetCode Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #0d0f14;
+  --surface: #13161e;
+  --surface2: #1a1e28;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.13);
+  --text: #e8eaf0;
+  --muted: #6b7089;
+  --subtle: #3a3f52;
+  --easy: #4ade80;
+  --easy-bg: rgba(74,222,128,0.1);
+  --medium: #fb923c;
+  --medium-bg: rgba(251,146,60,0.1);
+  --hard: #f87171;
+  --hard-bg: rgba(248,113,113,0.1);
+  --accent: #818cf8;
+  --accent-bg: rgba(129,140,248,0.12);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Sora', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ── HEADER ── */
+header {
+  padding: 48px 40px 36px;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
+  background: var(--bg);
+  backdrop-filter: blur(12px);
+}
+.header-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.header-text h1 {
+  font-size: clamp(22px, 3vw, 34px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+.header-text h1 span { color: var(--accent); }
+.header-text p { margin-top: 8px; color: var(--muted); font-size: 13px; font-weight: 300; }
+.header-stats { display: flex; gap: 20px; }
+.hstat { text-align: center; }
+.hstat-n { font-family: 'IBM Plex Mono', monospace; font-size: 24px; font-weight: 600; color: var(--accent); }
+.hstat-l { font-size: 11px; color: var(--muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* ── LAYOUT ── */
+.layout { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 260px 1fr; min-height: calc(100vh - 110px); }
+
+/* ── SIDEBAR ── */
+nav {
+  border-right: 1px solid var(--border);
+  padding: 24px 0;
+  position: sticky;
+  top: 110px;
+  height: calc(100vh - 110px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--subtle) transparent;
+}
+.nav-section-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  padding: 0 20px 10px;
+  font-weight: 600;
+}
+.nav-item {
+  display: block;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+.nav-item:hover { background: var(--surface); border-left-color: var(--subtle); }
+.nav-item.active { background: var(--surface); border-left-color: var(--accent); }
+.nav-ch { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); margin-bottom: 2px; }
+.nav-name { font-size: 12.5px; font-weight: 600; color: var(--text); line-height: 1.3; }
+.nav-count { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 3px; }
+
+/* ── MAIN CONTENT ── */
+main { padding: 32px 40px; overflow-y: auto; }
+
+.tech-section {
+  margin-bottom: 64px;
+  scroll-margin-top: 130px;
+}
+.tech-header {
+  display: flex; align-items: flex-start; gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.tech-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  background: var(--accent-bg);
+  color: var(--accent);
+  border: 1px solid rgba(129,140,248,0.25);
+  padding: 4px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+  margin-top: 3px;
+}
+.tech-info h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
+.tech-info p { font-size: 12.5px; color: var(--muted); margin-top: 4px; font-weight: 300; }
+
+/* ── DIFFICULTY GROUPS ── */
+.diff-group { margin-bottom: 20px; }
+.diff-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 10px;
+}
+.diff-pill {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 12px;
+  border-radius: 20px;
+}
+.diff-pill.easy { background: var(--easy-bg); color: var(--easy); }
+.diff-pill.medium { background: var(--medium-bg); color: var(--medium); }
+.diff-pill.hard { background: var(--hard-bg); color: var(--hard); }
+.diff-count { font-size: 11px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; }
+
+/* ── PROBLEM GRID ── */
+.problems-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 8px; }
+.prob-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text);
+  transition: all 0.18s ease;
+  cursor: pointer;
+}
+.prob-card:hover { border-color: var(--border2); background: var(--surface2); transform: translateY(-1px); }
+.prob-card:hover .prob-num { color: var(--accent); }
+.prob-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  min-width: 36px;
+  transition: color 0.18s;
+}
+.prob-name { font-size: 12.5px; font-weight: 400; flex: 1; line-height: 1.3; }
+.prob-arrow { font-size: 12px; color: var(--subtle); transition: color 0.18s; }
+.prob-card:hover .prob-arrow { color: var(--accent); }
+
+/* ── TECH SUMMARY BAR ── */
+.tech-summary {
+  display: flex; gap: 12px;
+  margin-top: 20px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.ts-item { display: flex; align-items: center; gap: 8px; }
+.ts-dot { width: 8px; height: 8px; border-radius: 50%; }
+.ts-dot.easy { background: var(--easy); }
+.ts-dot.medium { background: var(--medium); }
+.ts-dot.hard { background: var(--hard); }
+.ts-text { font-family: 'IBM Plex Mono', monospace; font-size: 11px; }
+.ts-text .n { font-weight: 600; }
+.ts-sep { width: 1px; background: var(--border2); margin: 0 4px; }
+
+/* ── SEARCH ── */
+.search-wrap { padding: 0 20px 16px; }
+.search-wrap input {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: var(--text);
+  font-family: 'Sora', sans-serif;
+  font-size: 12px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-wrap input::placeholder { color: var(--muted); }
+.search-wrap input:focus { border-color: var(--accent); }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--subtle); border-radius: 10px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; }
+  nav { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+  header { padding: 24px 20px 20px; }
+  main { padding: 24px 20px; }
+  .header-inner { flex-direction: column; align-items: flex-start; }
+}
+
+/* ── FADE IN ── */
+.tech-section { animation: fadeUp 0.4s ease both; }
+@keyframes fadeUp { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-text">
+      <h1>Levitin's Algorithms <span>→</span> LeetCode</h1>
+      <p>All techniques from <em>Introduction to the Design & Analysis of Algorithms (3rd Ed.)</em> mapped to practice problems</p>
+    </div>
+    <div class="header-stats">
+      <div class="hstat"><div class="hstat-n">10</div><div class="hstat-l">Techniques</div></div>
+      <div class="hstat"><div class="hstat-n" id="total-count">0</div><div class="hstat-l">Problems</div></div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <nav id="sidebar">
+    <div class="nav-section-label">Techniques</div>
+    <div class="search-wrap"><input type="text" id="search" placeholder="Filter problems…"/></div>
+  </nav>
+  <main id="main-content"></main>
+</div>
+
+<script>
+const techniques = [
+  {
+    id: 'brute-force',
+    chapter: 'Ch. 3',
+    name: 'Brute Force & Exhaustive Search',
+    desc: 'Try every possible candidate systematically until a valid solution is found. The baseline for all algorithm design.',
+    problems: {
+      easy: [
+        { n: 217, t: 'Contains Duplicate', s: 'contains-duplicate' },
+        { n: 268, t: 'Missing Number', s: 'missing-number' },
+        { n: 169, t: 'Majority Element', s: 'majority-element' },
+        { n: 67,  t: 'Add Binary', s: 'add-binary' },
+        { n: 118, t: "Pascal's Triangle", s: 'pascals-triangle' },
+      ],
+      medium: [
+        { n: 78,  t: 'Subsets', s: 'subsets' },
+        { n: 46,  t: 'Permutations', s: 'permutations' },
+        { n: 77,  t: 'Combinations', s: 'combinations' },
+        { n: 54,  t: 'Spiral Matrix', s: 'spiral-matrix' },
+        { n: 438, t: 'Find All Anagrams in a String', s: 'find-all-anagrams-in-a-string' },
+      ],
+      hard: [
+        { n: 51,  t: 'N-Queens', s: 'n-queens' },
+        { n: 37,  t: 'Sudoku Solver', s: 'sudoku-solver' },
+        { n: 60,  t: 'Permutation Sequence', s: 'permutation-sequence' },
+      ]
+    }
+  },
+  {
+    id: 'graph-traversal',
+    chapter: 'Ch. 3',
+    name: 'Graph Traversal — BFS / DFS',
+    desc: 'Systematically visit all vertices of a graph via depth-first or breadth-first traversal to explore structure.',
+    problems: {
+      easy: [
+        { n: 104, t: 'Maximum Depth of Binary Tree', s: 'maximum-depth-of-binary-tree' },
+        { n: 733, t: 'Flood Fill', s: 'flood-fill' },
+        { n: 617, t: 'Merge Two Binary Trees', s: 'merge-two-binary-trees' },
+        { n: 111, t: 'Minimum Depth of Binary Tree', s: 'minimum-depth-of-binary-tree' },
+        { n: 100, t: 'Same Tree', s: 'same-tree' },
+      ],
+      medium: [
+        { n: 200, t: 'Number of Islands', s: 'number-of-islands' },
+        { n: 102, t: 'Binary Tree Level Order Traversal', s: 'binary-tree-level-order-traversal' },
+        { n: 133, t: 'Clone Graph', s: 'clone-graph' },
+        { n: 994, t: 'Rotting Oranges', s: 'rotting-oranges' },
+        { n: 695, t: 'Max Area of Island', s: 'max-area-of-island' },
+      ],
+      hard: [
+        { n: 127, t: 'Word Ladder', s: 'word-ladder' },
+        { n: 126, t: 'Word Ladder II', s: 'word-ladder-ii' },
+        { n: 329, t: 'Longest Increasing Path in a Matrix', s: 'longest-increasing-path-in-a-matrix' },
+        { n: 773, t: 'Sliding Puzzle', s: 'sliding-puzzle' },
+      ]
+    }
+  },
+  {
+    id: 'decrease-conquer',
+    chapter: 'Ch. 4',
+    name: 'Decrease-and-Conquer',
+    desc: 'Reduce the problem to a strictly smaller instance of the same problem and solve it recursively. Includes binary search and topological sort.',
+    problems: {
+      easy: [
+        { n: 704, t: 'Binary Search', s: 'binary-search' },
+        { n: 278, t: 'First Bad Version', s: 'first-bad-version' },
+        { n: 374, t: 'Guess Number Higher or Lower', s: 'guess-number-higher-or-lower' },
+        { n: 35,  t: 'Search Insert Position', s: 'search-insert-position' },
+        { n: 392, t: 'Is Subsequence', s: 'is-subsequence' },
+      ],
+      medium: [
+        { n: 33,  t: 'Search in Rotated Sorted Array', s: 'search-in-rotated-sorted-array' },
+        { n: 207, t: 'Course Schedule (Topological Sort)', s: 'course-schedule' },
+        { n: 210, t: 'Course Schedule II', s: 'course-schedule-ii' },
+        { n: 230, t: 'Kth Smallest Element in BST', s: 'kth-smallest-element-in-a-bst' },
+        { n: 74,  t: 'Search a 2D Matrix', s: 'search-a-2d-matrix' },
+      ],
+      hard: [
+        { n: 4,   t: 'Median of Two Sorted Arrays', s: 'median-of-two-sorted-arrays' },
+        { n: 154, t: 'Find Minimum in Rotated Array II', s: 'find-minimum-in-rotated-sorted-array-ii' },
+        { n: 269, t: 'Alien Dictionary', s: 'alien-dictionary' },
+        { n: 302, t: 'Smallest Rectangle Enclosing Black Pixels', s: 'smallest-rectangle-enclosing-black-pixels' },
+      ]
+    }
+  },
+  {
+    id: 'divide-conquer',
+    chapter: 'Ch. 5',
+    name: 'Divide-and-Conquer',
+    desc: 'Split the problem into independent subproblems, solve each recursively, then combine results. Core technique behind Mergesort and Quicksort.',
+    problems: {
+      easy: [
+        { n: 104, t: 'Maximum Depth of Binary Tree', s: 'maximum-depth-of-binary-tree' },
+        { n: 88,  t: 'Merge Sorted Array', s: 'merge-sorted-array' },
+        { n: 226, t: 'Invert Binary Tree', s: 'invert-binary-tree' },
+        { n: 110, t: 'Balanced Binary Tree', s: 'balanced-binary-tree' },
+      ],
+      medium: [
+        { n: 912, t: 'Sort an Array (Mergesort)', s: 'sort-an-array' },
+        { n: 215, t: 'Kth Largest Element in an Array', s: 'kth-largest-element-in-an-array' },
+        { n: 148, t: 'Sort List', s: 'sort-list' },
+        { n: 241, t: 'Different Ways to Add Parentheses', s: 'different-ways-to-add-parentheses' },
+        { n: 427, t: 'Construct Quad Tree', s: 'construct-quad-tree' },
+      ],
+      hard: [
+        { n: 23,  t: 'Merge K Sorted Lists', s: 'merge-k-sorted-lists' },
+        { n: 315, t: 'Count of Smaller Numbers After Self', s: 'count-of-smaller-numbers-after-self' },
+        { n: 493, t: 'Reverse Pairs', s: 'reverse-pairs' },
+        { n: 4,   t: 'Median of Two Sorted Arrays', s: 'median-of-two-sorted-arrays' },
+      ]
+    }
+  },
+  {
+    id: 'transform-conquer',
+    chapter: 'Ch. 6',
+    name: 'Transform-and-Conquer',
+    desc: 'Transform the problem to a simpler or more familiar form, then solve it. Includes presorting, heaps, balanced BSTs, and problem reduction.',
+    problems: {
+      easy: [
+        { n: 242,  t: 'Valid Anagram', s: 'valid-anagram' },
+        { n: 349,  t: 'Intersection of Two Arrays', s: 'intersection-of-two-arrays' },
+        { n: 1046, t: 'Last Stone Weight', s: 'last-stone-weight' },
+        { n: 703,  t: 'Kth Largest Element in a Stream', s: 'kth-largest-element-in-a-stream' },
+        { n: 252,  t: 'Meeting Rooms', s: 'meeting-rooms' },
+      ],
+      medium: [
+        { n: 56,   t: 'Merge Intervals', s: 'merge-intervals' },
+        { n: 208,  t: 'Implement Trie (Prefix Tree)', s: 'implement-trie-prefix-tree' },
+        { n: 347,  t: 'Top K Frequent Elements', s: 'top-k-frequent-elements' },
+        { n: 1094, t: 'Car Pooling', s: 'car-pooling' },
+        { n: 253,  t: 'Meeting Rooms II', s: 'meeting-rooms-ii' },
+      ],
+      hard: [
+        { n: 295, t: 'Find Median from Data Stream', s: 'find-median-from-data-stream' },
+        { n: 480, t: 'Sliding Window Median', s: 'sliding-window-median' },
+        { n: 502, t: 'IPO', s: 'ipo' },
+      ]
+    }
+  },
+  {
+    id: 'space-time',
+    chapter: 'Ch. 7',
+    name: 'Space & Time Trade-Offs',
+    desc: 'Use extra memory (hash tables, lookup tables, caches) to dramatically speed up computation. Foundation of hashing and string matching algorithms.',
+    problems: {
+      easy: [
+        { n: 1,   t: 'Two Sum', s: 'two-sum' },
+        { n: 383, t: 'Ransom Note', s: 'ransom-note' },
+        { n: 387, t: 'First Unique Character in a String', s: 'first-unique-character-in-a-string' },
+        { n: 290, t: 'Word Pattern', s: 'word-pattern' },
+        { n: 205, t: 'Isomorphic Strings', s: 'isomorphic-strings' },
+      ],
+      medium: [
+        { n: 49,  t: 'Group Anagrams', s: 'group-anagrams' },
+        { n: 560, t: 'Subarray Sum Equals K', s: 'subarray-sum-equals-k' },
+        { n: 146, t: 'LRU Cache', s: 'lru-cache' },
+        { n: 454, t: '4Sum II', s: '4sum-ii' },
+        { n: 525, t: 'Contiguous Array', s: 'contiguous-array' },
+      ],
+      hard: [
+        { n: 76,  t: 'Minimum Window Substring', s: 'minimum-window-substring' },
+        { n: 460, t: 'LFU Cache', s: 'lfu-cache' },
+        { n: 41,  t: 'First Missing Positive', s: 'first-missing-positive' },
+        { n: 432, t: 'All O`one Data Structure', s: 'all-oone-data-structure' },
+      ]
+    }
+  },
+  {
+    id: 'dynamic-programming',
+    chapter: 'Ch. 8',
+    name: 'Dynamic Programming',
+    desc: 'Solve problems with optimal substructure and overlapping subproblems by memoizing or tabulating results. Covers knapsack, shortest paths, and optimal BSTs.',
+    problems: {
+      easy: [
+        { n: 70,  t: 'Climbing Stairs', s: 'climbing-stairs' },
+        { n: 198, t: 'House Robber', s: 'house-robber' },
+        { n: 746, t: 'Min Cost Climbing Stairs', s: 'min-cost-climbing-stairs' },
+        { n: 509, t: 'Fibonacci Number', s: 'fibonacci-number' },
+        { n: 338, t: 'Counting Bits', s: 'counting-bits' },
+      ],
+      medium: [
+        { n: 322,  t: 'Coin Change', s: 'coin-change' },
+        { n: 300,  t: 'Longest Increasing Subsequence', s: 'longest-increasing-subsequence' },
+        { n: 1143, t: 'Longest Common Subsequence', s: 'longest-common-subsequence' },
+        { n: 416,  t: 'Partition Equal Subset Sum', s: 'partition-equal-subset-sum' },
+        { n: 62,   t: 'Unique Paths', s: 'unique-paths' },
+        { n: 139,  t: 'Word Break', s: 'word-break' },
+      ],
+      hard: [
+        { n: 72,  t: 'Edit Distance', s: 'edit-distance' },
+        { n: 10,  t: 'Regular Expression Matching', s: 'regular-expression-matching' },
+        { n: 312, t: 'Burst Balloons', s: 'burst-balloons' },
+        { n: 85,  t: 'Maximal Rectangle', s: 'maximal-rectangle' },
+        { n: 132, t: 'Palindrome Partitioning II', s: 'palindrome-partitioning-ii' },
+      ]
+    }
+  },
+  {
+    id: 'greedy',
+    chapter: 'Ch. 9',
+    name: 'Greedy Technique',
+    desc: 'Make the locally optimal choice at each step, hoping to reach a global optimum. Covers Prim\'s, Kruskal\'s, Dijkstra\'s, and Huffman coding.',
+    problems: {
+      easy: [
+        { n: 455,  t: 'Assign Cookies', s: 'assign-cookies' },
+        { n: 121,  t: 'Best Time to Buy and Sell Stock', s: 'best-time-to-buy-and-sell-stock' },
+        { n: 860,  t: 'Lemonade Change', s: 'lemonade-change' },
+        { n: 1005, t: 'Maximize Sum After K Negations', s: 'maximize-sum-of-array-after-k-negations' },
+        { n: 122,  t: 'Best Time to Buy and Sell Stock II', s: 'best-time-to-buy-and-sell-stock-ii' },
+      ],
+      medium: [
+        { n: 55,  t: 'Jump Game', s: 'jump-game' },
+        { n: 134, t: 'Gas Station', s: 'gas-station' },
+        { n: 621, t: 'Task Scheduler', s: 'task-scheduler' },
+        { n: 435, t: 'Non-overlapping Intervals', s: 'non-overlapping-intervals' },
+        { n: 45,  t: 'Jump Game II', s: 'jump-game-ii' },
+        { n: 763, t: 'Partition Labels', s: 'partition-labels' },
+      ],
+      hard: [
+        { n: 871, t: 'Minimum Number of Refueling Stops', s: 'minimum-number-of-refueling-stops' },
+        { n: 330, t: 'Patching Array', s: 'patching-array' },
+        { n: 135, t: 'Candy', s: 'candy' },
+        { n: 1326, t: 'Minimum Number of Taps to Open to Water a Garden', s: 'minimum-number-of-taps-to-open-to-water-a-garden' },
+      ]
+    }
+  },
+  {
+    id: 'iterative-improvement',
+    chapter: 'Ch. 10',
+    name: 'Iterative Improvement',
+    desc: 'Start from a feasible solution and iteratively improve it. Covers the Simplex method, maximum flow, bipartite matching, and stable marriage.',
+    problems: {
+      easy: [
+        { n: 997, t: 'Find the Town Judge', s: 'find-the-town-judge' },
+        { n: 463, t: 'Island Perimeter', s: 'island-perimeter' },
+      ],
+      medium: [
+        { n: 743, t: 'Network Delay Time (Dijkstra)', s: 'network-delay-time' },
+        { n: 787, t: 'Cheapest Flights Within K Stops', s: 'cheapest-flights-within-k-stops' },
+        { n: 785, t: 'Is Graph Bipartite?', s: 'is-graph-bipartite' },
+        { n: 684, t: 'Redundant Connection', s: 'redundant-connection' },
+        { n: 399, t: 'Evaluate Division', s: 'evaluate-division' },
+      ],
+      hard: [
+        { n: 1349, t: 'Maximum Students Taking Exam', s: 'maximum-students-taking-exam' },
+        { n: 778,  t: 'Swim in Rising Water', s: 'swim-in-rising-water' },
+        { n: 1168, t: 'Optimize Water Distribution in a Village', s: 'optimize-water-distribution-in-a-village' },
+        { n: 407,  t: 'Trapping Rain Water II', s: 'trapping-rain-water-ii' },
+      ]
+    }
+  },
+  {
+    id: 'backtracking',
+    chapter: 'Ch. 12',
+    name: 'Backtracking',
+    desc: 'Systematic trial-and-error that abandons ("backtracks") partial solutions as soon as it determines they cannot lead to a valid solution.',
+    problems: {
+      easy: [
+        { n: 784, t: 'Letter Case Permutation', s: 'letter-case-permutation' },
+        { n: 401, t: 'Binary Watch', s: 'binary-watch' },
+      ],
+      medium: [
+        { n: 39,  t: 'Combination Sum', s: 'combination-sum' },
+        { n: 46,  t: 'Permutations', s: 'permutations' },
+        { n: 78,  t: 'Subsets', s: 'subsets' },
+        { n: 79,  t: 'Word Search', s: 'word-search' },
+        { n: 131, t: 'Palindrome Partitioning', s: 'palindrome-partitioning' },
+        { n: 22,  t: 'Generate Parentheses', s: 'generate-parentheses' },
+      ],
+      hard: [
+        { n: 51,  t: 'N-Queens', s: 'n-queens' },
+        { n: 37,  t: 'Sudoku Solver', s: 'sudoku-solver' },
+        { n: 212, t: 'Word Search II', s: 'word-search-ii' },
+        { n: 52,  t: 'N-Queens II', s: 'n-queens-ii' },
+        { n: 10,  t: 'Regular Expression Matching', s: 'regular-expression-matching' },
+      ]
+    }
+  }
+];
+
+function countProblems(t) {
+  return (t.problems.easy||[]).length + (t.problems.medium||[]).length + (t.problems.hard||[]).length;
+}
+
+let totalProblems = 0;
+techniques.forEach(t => totalProblems += countProblems(t));
+document.getElementById('total-count').textContent = totalProblems;
+
+// Build sidebar nav
+const sidebar = document.getElementById('sidebar');
+techniques.forEach(t => {
+  const a = document.createElement('a');
+  a.className = 'nav-item';
+  a.href = '#' + t.id;
+  a.dataset.id = t.id;
+  const cnt = countProblems(t);
+  a.innerHTML = `<div class="nav-ch">${t.chapter}</div><div class="nav-name">${t.name}</div><div class="nav-count">${cnt} problems</div>`;
+  sidebar.appendChild(a);
+});
+
+// Build main content
+const mainEl = document.getElementById('main-content');
+techniques.forEach((t, i) => {
+  const sec = document.createElement('section');
+  sec.className = 'tech-section';
+  sec.id = t.id;
+  sec.style.animationDelay = (i * 0.04) + 's';
+
+  const cnt = countProblems(t);
+  const eLen = (t.problems.easy||[]).length;
+  const mLen = (t.problems.medium||[]).length;
+  const hLen = (t.problems.hard||[]).length;
+
+  let diffSections = '';
+  ['easy','medium','hard'].forEach(diff => {
+    const probs = t.problems[diff] || [];
+    if(!probs.length) return;
+    const cards = probs.map(p =>
+      `<a class="prob-card" href="https://leetcode.com/problems/${p.s}/" target="_blank" rel="noopener">
+        <span class="prob-num">#${p.n}</span>
+        <span class="prob-name">${p.t}</span>
+        <span class="prob-arrow">↗</span>
+      </a>`
+    ).join('');
+    diffSections += `
+      <div class="diff-group">
+        <div class="diff-header">
+          <span class="diff-pill ${diff}">${diff.charAt(0).toUpperCase()+diff.slice(1)}</span>
+          <span class="diff-count">${probs.length} problem${probs.length>1?'s':''}</span>
+        </div>
+        <div class="problems-grid">${cards}</div>
+      </div>`;
+  });
+
+  sec.innerHTML = `
+    <div class="tech-header">
+      <span class="tech-badge">${t.chapter}</span>
+      <div class="tech-info">
+        <h2>${t.name}</h2>
+        <p>${t.desc}</p>
+      </div>
+    </div>
+    ${diffSections}
+    <div class="tech-summary">
+      <div class="ts-item"><div class="ts-dot easy"></div><span class="ts-text"><span class="n">${eLen}</span> Easy</span></div>
+      <div class="ts-sep"></div>
+      <div class="ts-item"><div class="ts-dot medium"></div><span class="ts-text"><span class="n">${mLen}</span> Medium</span></div>
+      <div class="ts-sep"></div>
+      <div class="ts-item"><div class="ts-dot hard"></div><span class="ts-text"><span class="n">${hLen}</span> Hard</span></div>
+      <div class="ts-sep"></div>
+      <div class="ts-item"><span class="ts-text" style="color:#818cf8"><span class="n">${cnt}</span> Total</span></div>
+    </div>`;
+  mainEl.appendChild(sec);
+});
+
+// Active nav highlight on scroll
+const sections = document.querySelectorAll('.tech-section');
+const navItems = document.querySelectorAll('.nav-item');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      navItems.forEach(n => n.classList.remove('active'));
+      const active = document.querySelector(`.nav-item[data-id="${e.target.id}"]`);
+      if(active) { active.classList.add('active'); active.scrollIntoView({block:'nearest'}); }
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(s => observer.observe(s));
+
+// Search / filter
+document.getElementById('search').addEventListener('input', function() {
+  const q = this.value.toLowerCase().trim();
+  if(!q) {
+    document.querySelectorAll('.prob-card').forEach(c => c.style.display = '');
+    document.querySelectorAll('.diff-group').forEach(g => g.style.display = '');
+    document.querySelectorAll('.tech-section').forEach(s => s.style.display = '');
+    return;
+  }
+  document.querySelectorAll('.tech-section').forEach(sec => {
+    let secVisible = false;
+    sec.querySelectorAll('.diff-group').forEach(grp => {
+      let grpVisible = false;
+      grp.querySelectorAll('.prob-card').forEach(card => {
+        const name = card.querySelector('.prob-name').textContent.toLowerCase();
+        const num = card.querySelector('.prob-num').textContent.toLowerCase();
+        const visible = name.includes(q) || num.includes(q);
+        card.style.display = visible ? '' : 'none';
+        if(visible) grpVisible = true;
+      });
+      grp.style.display = grpVisible ? '' : 'none';
+      if(grpVisible) secVisible = true;
+    });
+    sec.style.display = secVisible ? '' : 'none';
+  });
+});
+</script>
+</body>
+</html>
